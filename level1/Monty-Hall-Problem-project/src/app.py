@@ -28,10 +28,7 @@ for i in range(number_of_game):
 
     chart1.add_rows([wins_no_switch / (i + 1)])
     chart2.add_rows([wins_switch / (i + 1)])
-    time.sleep(.01)
-
-
-    # col1.add
+ 
 
 
 
