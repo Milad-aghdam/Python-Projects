@@ -5,7 +5,7 @@ from termcolor import colored
 class ContactBook():
     def __init__(self):
         """
-        create a dict
+        Create a dictionary to store contacts.
         """
         self.contact = defaultdict(dict)
 
@@ -15,15 +15,14 @@ class ContactBook():
 
         Parameters
         ----------
-        name : str
-            The name of the contact. Must be unique and not already in self.contact.
-        phone : str
-            The phone number of the contact.
-        email : str, optional
-            The email address of the contact. """
+        name (str) :The name of the contact. Must be unique and not already in self.contact.
+        phone (str) : The phone number of the contact.
+        email (str, optional) The email address of the contact.
+        """
         if name in self.contact:
             print("Contact Already Existed!")
             return
+        
         self.contact[name]["phone"] = phone
         self.contact[name]["email"] = email
         
@@ -51,8 +50,7 @@ class ContactBook():
 
         Parameters
         ----------
-        name : str
-            The name of the contact to be deleted. Must be in self.contact.
+        name (str) : The name of the contact to be deleted. Must be in self.contact.
         """
         if name in self.contact:
             del self.contact[name]
@@ -65,12 +63,9 @@ class ContactBook():
 
         Parameters
         ----------
-        name : str
-        The name of the contact to be updated. Must be in self.contact.
-        phone : str, optional
-        The new phone number of the contact. Defaults to None.
-        email : str, optional
-        The new email address of the contact. Defaults to None.
+        name (str): The name of the contact to be updated. Must be in self.contact.
+        phone (str, optional): The new phone number of the contact. Defaults to None.
+        email (str, optional): The new email address of the contact. Defaults to None.
         """
         if name in self.contact:
             if phone:
