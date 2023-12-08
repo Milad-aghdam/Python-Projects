@@ -76,4 +76,7 @@ class TicTacToe:
             except ValueError:
                 print("Invalid input. Please enter a valid number.")
 
-if __
+if __name__ == "__main__":
+    game = TicTacToe()
+    game.start()
+    
