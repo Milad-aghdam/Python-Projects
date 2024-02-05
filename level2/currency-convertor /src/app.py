@@ -19,5 +19,22 @@ base_currency = st.selectbox("From Currency (base):", CURRENCIES)
 
 target_currency = st.selectbox("To Currency (target):", CURRENCIES) 
 
-amount = st.number_input("Amount to Convert:", min_value=0.0, value="min")
+amount = st.number_input("Amount to Convert:", min_value=0.0, value=100.)
+
+if amount > 0 and base_currency and target_currency:
+    exchange_rate = convert_currency(base_currency, target_currency)
+    
+    if exchange_rate:
+        converted_amount = calculate_amount(amount, exchange_rate)
+        st.success(f"✅ Exchange Rate: {exchange_rate:.2f}")
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.metric(label="Base Currency", value=f"{amount:.2f} {base_currency}")
+        with col2:
+            st.markdown("<h1 style='text-align: center; margin: 0; color: green;'>&#8594;</h1>", unsafe_allow_html=True)
+        with col3:
+            st.metric(label="Target Currency", value=f"{converted_amount:.2f} {target_currency}")
+    
+    else:
+        st.error('Error fetching exchange rate.')
 
