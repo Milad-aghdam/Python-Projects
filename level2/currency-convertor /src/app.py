@@ -37,4 +37,17 @@ if amount > 0 and base_currency and target_currency:
     
     else:
         st.error('Error fetching exchange rate.')
+else:
+    # Display a warning message
+    st.warning('Please enter a valid amount and choose the currencies.')
 
+# Display some information about the tool
+st.markdown('---')
+st.markdown('### About This Tool')
+st.markdown(
+    """
+    This currency converter uses real-time exchange rates provided by the ExchangeRate-API.
+    - The conversion updates automatically as you input the amount or change the currency.
+    - Enjoy seamless currency conversion without the need to press a button!
+    """
+)
