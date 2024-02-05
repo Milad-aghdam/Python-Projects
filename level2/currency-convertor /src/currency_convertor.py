@@ -2,7 +2,7 @@
 import requests
 from cachetools import cached, TTLCache
 
-cache = TTLCache(maxsize=100, ttl=3*60*60)
+cache = TTLCache(maxsize=100, ttl=3*60)
 
 # Define a function to convert one currency to another
 @cached(cache)
