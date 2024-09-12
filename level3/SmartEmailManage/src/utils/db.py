@@ -1,12 +1,9 @@
 from tinydb import TinyDB, Query
-from tinydb.storages import JSONStorage
-from tinydb.middlewares import CachingMiddleware
-
 
 class DatabaseManager:
     def __init__(self, db_path='database.json'):
-        # Initialize the database with caching middleware
-        self.db = TinyDB(db_path, storage=CachingMiddleware(JSONStorage))
+        # Initialize the database without caching middleware
+        self.db = TinyDB(db_path)
         
         # Initialize tables
         self.profiles_table = self.db.table('profiles')
@@ -50,6 +47,10 @@ class DatabaseManager:
     def get_profile_by_email(self, email):
         Profile = Query()
         return self.profiles_table.search(Profile.email == email)
+
+    def delete_profile(self, profile_id):
+        """Delete a profile by doc_id."""
+        self.profiles_table.remove(doc_ids=[profile_id])
 
     # Template management
     def add_template(self, template_name, template_body):
@@ -112,4 +113,3 @@ class DatabaseManager:
             'total_sent_emails': len(self.sent_emails_table),
             'total_reminders': len(self.reminders_table),
         }
-
