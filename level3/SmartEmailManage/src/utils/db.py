@@ -64,6 +64,10 @@ class DatabaseManager:
 
     def get_templates(self):
         return self.templates_table.all()
+    
+    def delete_template(self, template_id):
+        self.templates_table.remove(doc_ids=[template_id])
+
 
     def get_template_by_name(self, template_name):
         Template = Query()
