@@ -5,6 +5,7 @@ st.set_page_config(page_title="Email Templates", page_icon="")
 
 db_manager = DatabaseManager()
 
+
 def main():
     st.title("📝 Templates")
     st.header("Add new Templates")
@@ -17,6 +18,7 @@ def main():
 
         submit_button = st.form_submit_button("Add Template")
         if submit_button:
+            
             if name_template and body_template:
             # Add the profile to the database
                 template_id = db_manager.add_template(template_name=name_template, template_body=body_template)
@@ -33,16 +35,18 @@ def main():
     else:
         for template in templates:
             with st.expander(f"Tamplate Name: {template['template_name']}"):
-                col1, col2 = st.columns([3, 1])
-                with col1:
-                    st.markdown(f"**Tamplate Name:** {template['template_name']}")
-                    st.markdown(f"**Tamplate Body:** {template['template_body']}")
                 
-                with col2:
-                    # Add a delete button for each template
-                    if st.button("Delete", key=f"delete_{template.doc_id}"):
-                        db_manager.templates_table.remove(doc_ids=[template.doc_id])
-                        st.success(f"Profile {template['template_name']} deleted.")
+                st.write(f"**Tamplate Body**")
+                st.text_area("", 
+                                value=template['template_body'],
+                                height=150, 
+                                disabled=True,
+                                key=f"Body:{template['template_body']}")
+                
+                # Add a delete button for each template
+                if st.button("Delete", key=f"delete_{template.doc_id}"):
+                    db_manager.templates_table.remove(doc_ids=[template.doc_id])
+                    st.success(f"Profile {template['template_name']} deleted.")
 
 if __name__ == "__main__":
     main()
