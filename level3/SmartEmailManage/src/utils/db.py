@@ -7,6 +7,7 @@ class DatabaseManager:
         
         # Initialize tables
         self.profiles_table = self.db.table('profiles')
+        self.user_profile_table = self.db.table('user_profile') 
         self.templates_table = self.db.table('templates')
         self.sent_emails_table = self.db.table('sent_emails')
         self.reminders_table = self.db.table('reminders')
@@ -15,6 +16,8 @@ class DatabaseManager:
         # Initialize IDs for different tables
         if not self.id_table.contains(Query().table_name == 'profiles'):
             self.id_table.insert({'table_name': 'profiles', 'last_id': 0})
+        if not self.id_table.contains(Query().table_name == 'user_profile'):
+            self.id_table.insert({'table_name': 'user_profile', 'last_id': 0})
         if not self.id_table.contains(Query().table_name == 'templates'):
             self.id_table.insert({'table_name': 'templates', 'last_id': 0})
         if not self.id_table.contains(Query().table_name == 'sent_emails'):
@@ -52,6 +55,46 @@ class DatabaseManager:
         """Delete a profile by doc_id."""
         self.profiles_table.remove(doc_ids=[profile_id])
 
+    def add_user_profile(self, name,title, profession, degree, university, social_media, signature):
+        """Add a new user profile. Replaces the old profile if one exists."""
+        user_profile = self._get_next_id('user_profile')
+
+        self.user_profile_table.truncate()  # Clear the previous profile (one profile per user)
+        self.user_profile_table.insert({
+            'name': name,
+            'title': title,
+            'profession': profession,
+            'degree': degree,
+            'university': university,
+            'social_media': social_media,
+            'signature': signature
+        })
+        return True
+
+    def get_user_profile(self):
+        """Retrieve the user's profile. Assumes there's only one user profile."""
+        return self.user_profile_table.get(doc_id=1)
+
+    def update_user_profile(self, name, title, profession, degree, university, social_media, signature):
+        """Update an existing user profile."""
+        UserProfile = Query()
+
+        # Ensure the first profile exists, otherwise add it
+        if not self.user_profile_table.contains(UserProfile.name.exists()):
+            self.add_user_profile(name, title, profession, degree, university, social_media, signature)
+        else:
+            # Update the first entry (assuming there's only one profile)
+            self.user_profile_table.update({
+                'name': name,
+                'title': title,
+                'profession': profession,
+                'degree': degree,
+                'university': university,
+                'social_media': social_media,
+                'signature': signature
+            }, doc_ids=[1])
+
+        return True
     # Template management
     def add_template(self, template_name, template_body):
         template_id = self._get_next_id('templates')
